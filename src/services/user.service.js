@@ -5,11 +5,20 @@ const Users = require("../models/User");
 const { ErrorHandler } = require("../helpers/error");
 const { hashPassword } = require("../helpers/encryptPassword");
 
-exports.createUserService = async (userName, email, password, role) => {
+// Joi schema
+const userSchema = require("../validation/user.validation");
+
+exports.createUserService = async (userData) => {
 	try {
-		// Check if fields are empty
-		if (!userName || !email || !password)
-			return new ErrorHandler(400, "Fields cannot be empty!");
+		// Validate user data
+		const { value, error } = userSchema.validate(userData);
+		if (error) {
+			const errors = error.details.map((error) => error.message);
+			return new ErrorHandler(404, errors);
+		}
+
+		// Get properties
+		const { userName, email, password, role } = value;
 
 		// Check if user's email already exists
 		const isUser = await Users.findOne({ email }).exec();
