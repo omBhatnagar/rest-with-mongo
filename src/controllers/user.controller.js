@@ -1,7 +1,11 @@
 // Import service
 
 const { ErrorHandler } = require("../helpers/error");
-const { createUserService } = require("../services/user.service");
+const {
+	createUserService,
+	getAllUsersService,
+	deleteUserService,
+} = require("../services/user.service");
 
 exports.createUser = async (req, res, next) => {
 	const { userName, email, password, role } = req.body;
@@ -22,6 +26,46 @@ exports.createUser = async (req, res, next) => {
 			satus: serviceResponse.status,
 			code: 201,
 			body: serviceResponse.body,
+		});
+	} catch (error) {
+		return next(error);
+	}
+};
+
+exports.getAllUsers = async (req, res, next) => {
+	try {
+		// Call service
+		const serviceResponse = await getAllUsersService();
+
+		// Check if service returned error
+		if (serviceResponse instanceof ErrorHandler) return next(serviceResponse);
+
+		// Send response
+		return res.status(200).send({
+			status: serviceResponse.status,
+			code: 200,
+			data: serviceResponse.body,
+		});
+	} catch (error) {
+		return next(error);
+	}
+};
+
+exports.deleteUser = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		// Call service
+		const serviceResponse = await deleteUserService(id);
+
+		// Check if service returned error
+		if (serviceResponse instanceof ErrorHandler) return next(serviceResponse);
+
+		// Send response
+		return res.status(200).send({
+			status: serviceResponse.status,
+			code: 200,
+			message: "User deleted successfully.",
+			data: serviceResponse.body,
 		});
 	} catch (error) {
 		return next(error);
