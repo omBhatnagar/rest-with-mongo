@@ -86,6 +86,7 @@ exports.loginUserService = async (userData) => {
 				role: user.role,
 			},
 			process.env.USER_JWT_SECRET,
+			{ expiresIn: "1 day" },
 		);
 
 		return { status: true, body: token };
