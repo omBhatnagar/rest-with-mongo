@@ -11,12 +11,12 @@ exports.createUser = async (req, res, next) => {
 	const { userName, email, password, role } = req.body;
 	try {
 		// Call service
-		const serviceResponse = await createUserService(
+		const serviceResponse = await createUserService({
 			userName,
 			email,
 			password,
 			role,
-		);
+		});
 
 		// Check if service returned error
 		if (serviceResponse instanceof ErrorHandler) return next(serviceResponse);
