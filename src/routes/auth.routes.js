@@ -23,4 +23,15 @@ router.get(
 	}),
 );
 router.get("/", (req, res) => res.json(req.user));
+
+// Log out from OAuth
+router.get("/logout", function (req, res, next) {
+	req.logout(function (err) {
+		if (err) {
+			return next(err);
+		}
+		res.redirect("/api/testsession");
+	});
+});
+
 module.exports = router;
