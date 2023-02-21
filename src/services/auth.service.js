@@ -17,7 +17,7 @@ exports.createUserService = async (userData) => {
 		const { value, error } = authSchema.userRegisterSchema.validate(userData);
 		if (error) {
 			const errors = error.details.map((error) => error.message);
-			return new ErrorHandler(404, errors);
+			return new ErrorHandler(400, errors);
 		}
 
 		// Get properties
@@ -68,7 +68,7 @@ exports.loginUserService = async (userData) => {
 		const { value, error } = authSchema.userLoginSchema.validate(userData);
 		if (error) {
 			const errors = error.details.map((error) => error.message);
-			return new ErrorHandler(404, errors);
+			return new ErrorHandler(400, errors);
 		}
 
 		// Get properties
@@ -80,7 +80,7 @@ exports.loginUserService = async (userData) => {
 
 		// Check passwords
 		const validated = checkPassword(password, user.password);
-		if (!validated) return new ErrorHandler(404, "Incorrect email/password.");
+		if (!validated) return new ErrorHandler(400, "Incorrect email/password.");
 
 		// Sign JWT
 		const token = await jwt.sign(
