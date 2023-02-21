@@ -8,7 +8,7 @@ const postSchema = Joi.object({
 const updatePostSchema = Joi.object({
 	title: Joi.string(),
 	body: Joi.string(),
-	postId: Joi.string().required(),
+	postId: Joi.string().pattern(new RegExp("^[0-9a-fA-F]{24}$")),
 });
 
 const postIdValidation = Joi.object({
