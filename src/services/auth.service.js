@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
 // Model
 const Users = require("../models/User");
@@ -20,7 +21,7 @@ exports.createUserService = async (userData) => {
 		}
 
 		// Get properties
-		const { userName, email, password } = value;
+		const { name, email, password } = value;
 		let { role } = value;
 
 		// Set default value for role as user
@@ -36,7 +37,8 @@ exports.createUserService = async (userData) => {
 
 		// Create instance
 		const user = new Users({
-			userName,
+			_id: uuidv4(),
+			name,
 			email,
 			password: encryptedPassword,
 			role,
@@ -48,6 +50,7 @@ exports.createUserService = async (userData) => {
 		// Sign JWT
 		const token = await jwt.sign(
 			{
+				_id: user._id,
 				email,
 				role,
 			},
@@ -82,6 +85,7 @@ exports.loginUserService = async (userData) => {
 		// Sign JWT
 		const token = await jwt.sign(
 			{
+				_id: user._id,
 				email,
 				role: user.role,
 			},
