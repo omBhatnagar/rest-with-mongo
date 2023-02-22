@@ -8,11 +8,11 @@ const {
 const { ErrorHandler } = require("../helpers/error");
 
 exports.registerUserController = async (req, res, next) => {
-	const { userName, email, password, role } = req.body;
+	const { name, email, password, role } = req.body;
 	try {
 		// Call service
 		const serviceResponse = await createUserService({
-			userName,
+			name,
 			email,
 			password,
 			role,

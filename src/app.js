@@ -4,6 +4,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const passport = require("passport");
+const session = require("express-session");
+const path = require("path");
+
+// Session
+const SQLiteStore = require("connect-sqlite3")(session);
 
 // Initialize API
 const app = Express();
@@ -35,12 +40,23 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
+app.use(Express.static(path.join(__dirname + "/public")));
+app.use(
+	session({
+		secret: "keyboard cat",
+		resave: false,
+		saveUninitialized: false,
+		store: new SQLiteStore(),
+	}),
+);
+app.use(passport.authenticate("session"));
 
 // Routes
 app.use("/api", routes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
+	console.log(error);
 	handleError(error, res);
 });
 
