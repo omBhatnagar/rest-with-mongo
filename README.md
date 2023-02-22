@@ -2,6 +2,12 @@
 ### This API has three modules - User, Posts and Auth
 #### Note: Server runs locally on port 3000.
 
+### Env file contents:  
+DATABASE_URL: URL to connect with MongoDB database.  
+USER_JWT_SECRET: Secret for JWT.  
+GOOGLE_CLIENT_ID: Client ID for Google OAuth.  
+GOOGLE_CLIENT_SECRET: Client secret for Google OAuth.  
+
 ## Posts
 Implemented CRUD operations for a Post. A single post contains a title and a body.
 #### Endpoint: /api/posts
